@@ -10,7 +10,7 @@ namespace Task_3
             int[,] b = { { 3, 4 }, { 3, 7 }};
 
             var result = OperationWithMatrix.MultipliesMatrices(a, b);
-            OperationWithMatrix.ShowMatrice(result);
+            OperationWithMatrix.ShowMatrix(result);
             Console.ReadKey();
         }
     }
