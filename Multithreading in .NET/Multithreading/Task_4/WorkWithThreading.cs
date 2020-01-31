@@ -1,57 +1,33 @@
-﻿using System;
-using System.Threading;
-
-namespace Task_4
+﻿namespace Task_4
 {
-    class WorkWithThreading
+    internal abstract class WorkWithThreading
     {
-        static Semaphore sem = new Semaphore(3, 3);
-
-        public static void OperationWithStateUseThread(object state)
+        internal void OperationWithState(object state)
         {
+            this.TakeLockResources();
+
             var localState = (int)state;
 
-            ShowStateNumber(localState);
-            DecrementStateNumber(localState);
+            this.ShowStateNumber(localState);
+            localState = DecrementStateNumber(localState);
 
             if (localState <= 0)
             {
                 return;
             }
 
-            var thread = new Thread(new ParameterizedThreadStart(OperationWithStateUseThread));
-            thread.Start(localState);
-
-            thread.Join();
+            this.StartTreadMethod(localState);
         }
 
-        public static void OperationWithStateUseThreadPool(object state)
+        protected abstract void TakeLockResources();
+
+        protected abstract void StartTreadMethod(int localState);
+
+        protected abstract void ShowStateNumber(int localState);
+
+        private static int DecrementStateNumber(int localState)
         {
-            sem.WaitOne();
-
-            var localState = (int)state;
-
-            ShowStateNumber(localState);
-            DecrementStateNumber(localState);
-
-            if (localState <= 0)
-            {
-                return;
-            }
-
-            var thread = ThreadPool.QueueUserWorkItem(OperationWithStateUseThreadPool, localState);
-
-            sem.Release();
-        }
-
-        private static void ShowStateNumber(int localState)
-        {
-            Console.WriteLine($"Thread-{localState}");
-        }
-
-        private static void DecrementStateNumber(int localState)
-        {
-            localState--;
+            return --localState;
         }
     }
 }

@@ -2,13 +2,19 @@
 
 namespace Task_4
 {
+    using Task_4.Commands;
+
     class Program
     {
         static void Main(string[] args)
         {
-            WorkWithThreading.OperationWithStateUseThread(10);
-            WorkWithThreading.OperationWithStateUseThreadPool(10);
-            
+            WorkWithThreading workWithThreading1 = new OperationWithStateUseThread();
+
+            WorkWithThreading workWithThreading2 = new OperationWithStateUseThreadPool();
+
+            workWithThreading1.OperationWithState(5);
+            workWithThreading2.OperationWithState(7);
+
             Console.ReadKey();
         }
     }
