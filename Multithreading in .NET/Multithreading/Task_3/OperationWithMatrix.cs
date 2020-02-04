@@ -4,85 +4,108 @@ using Task_3.Models;
 
 namespace Task_3
 {
-    using System.Linq;
-
     class OperationWithMatrix
     {
-        private static int[,] _a;
-
-        private static int[,] _b;
-
         internal static int[,] MultipliesMatrices(int[,] a, int[,] b)
         {
-            _a = a;
-            _b = b;
+            var matrices = new Matrices
+            {
+                firstMatrix = a,
+                secondMatrix = b
+            };
 
-            int halfMatrixNumber = _a.GetLength(0) / 2;
-            int endMatrixNumber = _a.GetLength(0);
+            if (matrices.firstMatrix.GetLength(1) != matrices.secondMatrix.GetLength(0))
+            {
+                Console.WriteLine("\n Number of columns in First Matrix should be equal to Number of rows in Second Matrix.");
+                Console.WriteLine("\n Please re-enter correct dimensions.");
+                return null;
+            }
 
-            var tasks1 = Task.Factory.StartNew(() => ParallelMatrixCalculateCall(new ParallelParamets { startNumber = 0, endNumber = halfMatrixNumber }));
-            var tasks2 = Task.Factory.StartNew(() => ParallelMatrixCalculateCall(new ParallelParamets { startNumber = halfMatrixNumber, endNumber = endMatrixNumber }));
+            var halfMatrixNumber = matrices.firstMatrix.GetLength(0) / 2;
+            var endMatrixNumber = matrices.firstMatrix.GetLength(0);
+
+            var tasks1 = Task.Factory.StartNew(
+                    () => ParallelMultiplyMatrixCalculateCall(
+                        new ParallelParamets
+                        {
+                            startNumber = 0,
+                            endNumber = halfMatrixNumber
+                        },
+                        matrices));
+
+            var tasks2 = Task.Factory.StartNew(
+                    () => ParallelMultiplyMatrixCalculateCall(
+                        new ParallelParamets
+                            {
+                                startNumber = halfMatrixNumber,
+                                endNumber = endMatrixNumber
+                            },
+                        matrices));
 
             Task.WaitAll(tasks1, tasks2);
 
-            var result = SumMatricesResult(tasks1.Result, tasks2.Result);
+            var result = SumMatricesResult(new Matrices{firstMatrix = tasks1.Result,secondMatrix = tasks2.Result} );
 
             return result;
         }
 
-        internal static void ShowMatrix(int[,] a)
+        internal static void ShowMatrix(int[,] result)
         {
-            for (int i = 0; i < a.GetLength(0); i++)
+            if (result == null)
             {
-                for (int j = 0; j < a.GetLength(1); j++)
+                return;
+            }
+
+            for (int i = 0; i < result.GetLength(0); i++)
+            {
+                for (int j = 0; j < result.GetLength(1); j++)
                 {
-                    Console.Write(a[i, j] + " ");
+                    Console.Write(result[i, j] + " ");
                 }
 
                 Console.WriteLine();
             }
         }
 
-        private static int[,] SumMatricesResult(int[,] a, int[,] b)
+        private static int[,] SumMatricesResult(Matrices matrices)
         {
-            var result = new int[a.GetLength(0), b.GetLength(1)];
-
-            for (int i = 0; i < a.GetLength(0); i++)
+            if (matrices.firstMatrix == null || matrices.secondMatrix == null)
             {
-                for (int j = 0; j < a.GetLength(1); j++)
+                return null;
+            }
+
+            var result = new int[matrices.firstMatrix.GetLength(0), matrices.secondMatrix.GetLength(1)];
+
+            for (int row = 0; row < matrices.firstMatrix.GetLength(0); row++)
+            {
+                for (int col = 0; col < matrices.firstMatrix.GetLength(1); col++)
                 {
-                    result[i, j] = a[i, j] + b[i, j];
+                    result[row, col] = matrices.firstMatrix[row, col] + matrices.secondMatrix[row, col];
                 }
             }
 
             return result;
         }
 
-        private static int[,] ParallelMatrixCalculateCall(object parallelParameters)
+        private static int[,] ParallelMultiplyMatrixCalculateCall(ParallelParamets parameters, Matrices matrices)
         {
-            var parameters = (ParallelParamets)parallelParameters;
-
-            var result = new int[_a.GetLength(0), _b.GetLength(1)];
-
-            Parallel.For(parameters.startNumber, parameters.endNumber, i =>
-                {
-                    result = MultiplyMatrixCalculated(i);
-                });
-
-            return result;
-        }
-
-        private static int[,] MultiplyMatrixCalculated(int iteration)
-        {
-            var result = new int[_a.GetLength(0), _b.GetLength(1)];
-
-            for (int j = 0; j < _b.GetLength(1); ++j)
+            if (matrices.firstMatrix == null || matrices.secondMatrix == null)
             {
-                for (int k = 0; k < _b.GetLength(0); ++k)
-                {
-                    result[iteration, j] += _a[iteration, k] * _b[k, j];
-                }
+                return null;
             }
+
+            var result = new int[matrices.firstMatrix.GetLength(0), matrices.secondMatrix.GetLength(1)];
+
+            Parallel.For(parameters.startNumber, parameters.endNumber, row =>
+            {
+                for (int col = 0; col < matrices.secondMatrix.GetLength(1); ++col)
+                {
+                    for (int i = 0; i < matrices.secondMatrix.GetLength(0); ++i)
+                    {
+                        result[row, col] += matrices.firstMatrix[row, i] * matrices.secondMatrix[i, col];
+                    }
+                }
+            });
 
             return result;
         }
