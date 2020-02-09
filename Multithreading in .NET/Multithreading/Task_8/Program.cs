@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using Task_8.Commands;
 
 namespace Task_8
 {
@@ -7,29 +7,26 @@ namespace Task_8
     {
         static void Main(string[] args)
         {
-            while (true)
+            try
             {
-                Console.WriteLine("Введите значение N");
-                var n = Convert.ToInt32(Console.ReadLine());
+                while (true)
+                {
+                    Console.WriteLine("Введите значение N");
+                    var n = Convert.ToInt32(Console.ReadLine());
 
-                var result = SumAcync(n);
+                    if (n <= 0)
+                    {
+                        Console.WriteLine($"Введено неверное значение N");
+                        continue;
+                    }
+
+                    var result = DataOperations.SumAcync(n);
+                }
             }
-        }
-
-        private static async Task SumAcync(int n)
-        {
-            int sum = 0;
-
-            await Task.Factory.StartNew(() =>
+            catch (Exception ex)
             {
-                 for (int i = 0; i < n; i++)
-                 {
-                    sum += i;
-                    Task.Delay(500).Wait();
-                 }
-            });
-
-            Console.WriteLine($"Сумма чисел от 0 до {n} = {sum}");
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }
