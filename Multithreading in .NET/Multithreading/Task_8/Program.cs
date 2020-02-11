@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Task_8.Commands;
 
 namespace Task_8
@@ -9,10 +10,12 @@ namespace Task_8
         {
             try
             {
+                int n = EnterNumber();
+
                 while (true)
                 {
-                    Console.WriteLine("Введите значение N");
-                    var n = Convert.ToInt32(Console.ReadLine());
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    var token = cancellationTokenSource.Token;
 
                     if (n <= 0)
                     {
@@ -20,13 +23,23 @@ namespace Task_8
                         continue;
                     }
 
-                    var result = DataOperations.SumAcync(n);
+                    var result = DataOperations.SumAcync(n, token);
+
+                    n = EnterNumber();
+                    cancellationTokenSource.Cancel();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+                Console.ReadKey();
             }
+        }
+
+        private static int EnterNumber()
+        {
+            Console.WriteLine("Введите значение N");
+            return Convert.ToInt32(Console.ReadLine());
         }
     }
 }

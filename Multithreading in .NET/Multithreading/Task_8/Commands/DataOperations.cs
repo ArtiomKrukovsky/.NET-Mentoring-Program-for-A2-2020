@@ -1,22 +1,41 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Task_8.Commands
 {
     internal static class DataOperations
     {
-        internal static async Task SumAcync(int n)
+        internal static async Task SumAcync(int n, CancellationToken token)
         {
-            int sum = 0;
+            if (token.IsCancellationRequested)
+            {
+                Console.WriteLine("Операция прервана");
+                return;
+            }
 
             await Task.Factory.StartNew(() =>
             {
-                for (int i = 0; i <= n; i++)
-                {
-                    sum += i;
-                    Task.Delay(500).Wait();
-                }
+                Sum(n, token);
             });
+        }
+
+        private static void Sum(int n, CancellationToken token)
+        {
+            int sum = 0;
+
+            for (int i = 0; i <= n; i++)
+            {
+                sum += i;
+
+                if (token.IsCancellationRequested)
+                {
+                    Console.WriteLine("Операция прервана");
+                    return;
+                }
+
+                Thread.Sleep(1000);
+            }
 
             ShowResult(n, sum);
         }
