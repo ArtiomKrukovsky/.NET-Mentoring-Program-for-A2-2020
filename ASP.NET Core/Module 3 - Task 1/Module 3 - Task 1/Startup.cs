@@ -59,6 +59,7 @@ namespace Module_3___Task_1
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseMiddleware<>()
 
             app.UseMvc(routes =>
             {
