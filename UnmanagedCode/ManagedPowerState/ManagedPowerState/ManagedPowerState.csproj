@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <UseNETCoreGenerator>true</UseNETCoreGenerator>
+    <EnableComHosting>true</EnableComHosting>
+  </PropertyGroup>
+
+</Project>
