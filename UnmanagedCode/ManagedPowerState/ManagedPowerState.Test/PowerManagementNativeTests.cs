@@ -63,6 +63,12 @@
         }
 
         [Fact]
+        public void CallNtPowerInformation_ReserveHibernationFile()
+        {
+            this.powerState.ReserveHibernationFile();
+        }
+
+        [Fact]
         public void CallNtPowerInformation_GetLastWakeTimeInSeconds()
         {
             var result = this.powerState.GetLastWakeTimeInSeconds();

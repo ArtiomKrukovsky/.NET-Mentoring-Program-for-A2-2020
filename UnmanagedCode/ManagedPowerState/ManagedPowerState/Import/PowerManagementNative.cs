@@ -24,7 +24,7 @@
              out SystemPowerInformation outputBuffer,
              uint outputBufferSize);
 
-        [DllImport("powrprof.dll")]
+        [DllImport("powrprof.dll", SetLastError = true)]
         internal static extern uint CallNtPowerInformation(
              PowerInformationLevel informationLevel,
              IntPtr inputBuffer,

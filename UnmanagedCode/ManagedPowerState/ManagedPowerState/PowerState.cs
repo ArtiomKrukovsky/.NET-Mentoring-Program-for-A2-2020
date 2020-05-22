@@ -4,6 +4,7 @@
     using System.Runtime.InteropServices;
 
     using ManagedPowerState.Enums;
+    using ManagedPowerState.Extension_Methods;
     using ManagedPowerState.Helpers;
     using ManagedPowerState.Structs;
 
@@ -13,6 +14,16 @@
     public class PowerState : IPowerState
     {
         private uint success = 0;
+
+        public void ReserveHibernationFile()
+        {
+            this.HibernateFileManagement(true);
+        }
+
+        public void RemoveHibernationFile()
+        {
+            this.HibernateFileManagement(false);
+        }
 
         public double GetLastSleepTimeInSeconds()
         {
@@ -80,6 +91,34 @@
                 (uint)Marshal.SizeOf(typeof(long)));
 
             return this.IsSuccess(result) ? time.ToInt64() : 0;
+        }
+
+        private void HibernateFileManagement(bool isReserve)
+        {
+            var bufferSize = Marshal.SizeOf(typeof(bool));
+            var inputBuffer = Marshal.AllocCoTaskMem(bufferSize);
+            var bytes = isReserve.ToByte();
+
+            try
+            {
+                var result = PowerManagementNative
+                    .CallNtPowerInformation(
+                        PowerInformationLevel.SystemReserveHiberFile,
+                        inputBuffer,
+                        (uint)bufferSize,
+                        out IntPtr _,
+                        0);
+
+                if (!this.IsSuccess(result))
+                {
+                    var error = Marshal.GetLastWin32Error();
+                    throw new Exception($"CallNtPowerInformation executed with an error {error}");
+                }
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(inputBuffer);
+            }
         }
 
         private bool IsSuccess(uint result)

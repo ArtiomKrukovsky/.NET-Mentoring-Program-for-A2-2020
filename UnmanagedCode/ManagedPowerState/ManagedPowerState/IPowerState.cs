@@ -21,5 +21,9 @@
         double GetLastSleepTimeInSeconds();
 
         double GetLastWakeTimeInSeconds();
+
+        void ReserveHibernationFile();
+
+        void RemoveHibernationFile();
     }
 }
