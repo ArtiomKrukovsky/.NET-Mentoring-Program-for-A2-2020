@@ -13,4 +13,12 @@
     <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebShop.Domain\WebShop.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
