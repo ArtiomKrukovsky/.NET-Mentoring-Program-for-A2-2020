@@ -105,8 +105,8 @@
                     .CallNtPowerInformation(
                         PowerInformationLevel.SystemReserveHiberFile,
                         inputBuffer,
-                        (uint)bufferSize,
-                        out IntPtr _,
+                        (uint)1,
+                        IntPtr.Zero,
                         0);
 
                 if (!this.IsSuccess(result))

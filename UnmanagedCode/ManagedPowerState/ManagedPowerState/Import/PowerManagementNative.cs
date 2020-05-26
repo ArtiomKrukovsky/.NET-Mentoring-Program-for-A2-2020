@@ -32,6 +32,14 @@
              out IntPtr outputBuffer,
              uint outputBufferSize);
 
+        [DllImport("powrprof.dll", SetLastError = true)]
+        internal static extern uint CallNtPowerInformation(
+             PowerInformationLevel informationLevel,
+             IntPtr inputBuffer,
+             uint inputBufferSize,
+             IntPtr outputBuffer,
+             uint outputBufferSize);
+
         [DllImport("powrprof.dll")]
         internal static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
     }
