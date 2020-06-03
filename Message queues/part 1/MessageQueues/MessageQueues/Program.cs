@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MessageQueues
+﻿namespace MessageQueues
 {
     class Program
     {
         static void Main(string[] args)
         {
+            var files = DictionaryListener.GetFiles(Constants.DirectoryPath, Constants.FileExpansion);
 
+            using (var model = MQConnection.GetRabbitChannel(Constants.QueryName))
+            {
+                MessageSender.SendMessage(model, files, Constants.QueryName);
+            }
         }
     }
 }
