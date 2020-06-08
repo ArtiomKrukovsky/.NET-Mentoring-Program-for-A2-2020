@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="DictionaryListener.cs" />
+    <Compile Include="DirectoryListener.cs" />
     <Compile Include="MessageSender.cs" />
     <Compile Include="MQConnection.cs" />
     <Compile Include="Program.cs" />

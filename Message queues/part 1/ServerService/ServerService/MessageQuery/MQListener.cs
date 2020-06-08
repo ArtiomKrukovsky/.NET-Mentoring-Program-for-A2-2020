@@ -19,7 +19,10 @@
                 consumer.Received += Consumer_Received;
                 
                 model.BasicConsume(Constants.QueryName, true, consumer);
-                Console.ReadLine();
+                Console.WriteLine("Press \'q\' to stop listening message query.");
+                while (Console.Read() != 'q')
+                {
+                }
             }
         }
 

@@ -8,7 +8,7 @@
         {
             using (var context = new FileDbContext())
             {
-                var file = new File()
+                var file = new File
                 {
                     Title = "new",
                     Data = fileData,
