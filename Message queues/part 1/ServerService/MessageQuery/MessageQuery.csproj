@@ -66,11 +66,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="MessageQuery\MQConnection.cs" />
+    <Compile Include="MessageQuery\MQListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServerService.Domain\ServerService.Domain.csproj">
+      <Project>{f7ed46c5-c584-4c03-bca5-e284415dc56a}</Project>
+      <Name>ServerService.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

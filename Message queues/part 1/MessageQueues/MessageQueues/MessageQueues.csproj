@@ -62,17 +62,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="DirectoryListener.cs" />
-    <Compile Include="FileViewModel.cs" />
-    <Compile Include="MessageSender.cs" />
-    <Compile Include="MQConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessageQuery.MQRabbit\MessageQuery.MQRabbit.csproj">
+      <Project>{7e6b2f96-fecd-462c-972f-22a77c8f837a}</Project>
+      <Name>MessageQuery.MQRabbit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

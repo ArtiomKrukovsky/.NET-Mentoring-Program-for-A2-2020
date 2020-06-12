@@ -72,12 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="DataService\MessageSaver.cs" />
-    <Compile Include="MessageQuery\MQConnection.cs" />
-    <Compile Include="MessageQuery\MQListener.cs" />
-    <Compile Include="Models\File.cs" />
-    <Compile Include="Models\FileDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,7 +83,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MessageQuery\MessageQuery.csproj">
+      <Project>{e11a19a9-e400-4b38-b31b-7254370a5c79}</Project>
+      <Name>MessageQuery</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
