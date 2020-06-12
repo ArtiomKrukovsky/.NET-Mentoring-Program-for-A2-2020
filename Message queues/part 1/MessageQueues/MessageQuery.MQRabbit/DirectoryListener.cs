@@ -15,9 +15,9 @@
                 return;
             }
 
-            var filesPath = FindExistFiles(path);
-            WriteInfoToConsole(filesPath);
-            PublishFilesData(filesPath);
+            var files = FindExistFiles(path);
+            WriteInfoToConsole(files);
+            MessageSender.SendMessage(files);
         }
 
         public static void DirectoryFilesListener()
@@ -42,13 +42,15 @@
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine("File: " + e.Name + " " + e.ChangeType);
-            PublishFilesData(new List<FileViewModel> { new FileViewModel { FileName = e.FullPath, Title = e.Name } });
-        }
-
-        private static void PublishFilesData(List<FileViewModel> files)
-        {
-            SetFileBytesData(files);
-            MessageSender.SendMessage(files);
+            MessageSender.SendMessage(new List<FileViewModel>
+            {
+                new FileViewModel
+                {
+                    FileName = e.FullPath,
+                    Title = e.Name,
+                    Data = SetFileBytesData(e.FullPath)
+                }
+            });
         }
 
         private static void WriteInfoToConsole(List<FileViewModel> files)
@@ -62,18 +64,21 @@
         private static List<FileViewModel> FindExistFiles(string path)
         {
             var directory = new DirectoryInfo(path);
-            var filesPath = directory.GetFiles().Where(x => x.Extension == MessageQuery.MQRabbit.Constants.FileExpansion)
-                .Select(x => new FileViewModel { FileName = x.FullName, Title = x.Name }).ToList();
-
-            return filesPath;
+            var files = directory.GetFiles()
+                .Where(x => x.Extension == Constants.FileExpansion)
+                .Select(x => new FileViewModel
+                {
+                    FileName = x.FullName,
+                    Title = x.Name,
+                    Data = SetFileBytesData(x.FullName)
+                }).ToList();
+            
+            return files;
         }
 
-        private static void SetFileBytesData(IEnumerable<FileViewModel> files)
+        private static byte[] SetFileBytesData(string path)
         {
-            foreach (var file in files)
-            {
-               file.Data = File.ReadAllBytes(file.FileName);
-            }
+            return File.ReadAllBytes(path);
         }
     }
 }

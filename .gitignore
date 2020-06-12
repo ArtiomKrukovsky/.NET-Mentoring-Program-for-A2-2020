@@ -24,6 +24,7 @@ Thumbs.db
 *.lib
 *.sbr
 *.mp4
+*.webm
 obj/
 [Rr]elease*/
 _ReSharper*/
