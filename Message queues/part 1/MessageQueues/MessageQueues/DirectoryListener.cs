@@ -41,36 +41,39 @@
 
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
-            Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-            PublishFilesData(new List<string> { e.FullPath });
+            Console.WriteLine("File: " + e.Name + " " + e.ChangeType);
+            PublishFilesData(new List<FileViewModel> { new FileViewModel { FileName = e.FullPath, Title = e.Name } });
         }
 
-        private static void PublishFilesData(List<string> filesPath)
+        private static void PublishFilesData(List<FileViewModel> files)
         {
-            var filesData = ConvertFilesToBytes(filesPath);
-            MessageSender.SendMessage(filesData);
+            SetFileBytesData(files);
+            MessageSender.SendMessage(files);
         }
 
-        private static void WriteInfoToConsole(List<string> filesPath)
+        private static void WriteInfoToConsole(List<FileViewModel> files)
         {
-            foreach (var filePath in filesPath)
+            foreach (var file in files)
             {
-                Console.WriteLine($"File: {filePath} - Existing");
+                Console.WriteLine($"File: {file.Title} - Existing");
             }
         }
 
-        private static List<string> FindExistFiles(string path)
+        private static List<FileViewModel> FindExistFiles(string path)
         {
             var directory = new DirectoryInfo(path);
             var filesPath = directory.GetFiles().Where(x => x.Extension == Constants.FileExpansion)
-                .Select(x => x.FullName).ToList();
+                .Select(x => new FileViewModel { FileName = x.FullName, Title = x.Name }).ToList();
 
             return filesPath;
         }
 
-        private static IEnumerable<byte[]> ConvertFilesToBytes(IEnumerable<string> filesPath)
+        private static void SetFileBytesData(IEnumerable<FileViewModel> files)
         {
-            return filesPath.Select(File.ReadAllBytes).ToList();
+            foreach (var file in files)
+            {
+               file.Data = File.ReadAllBytes(file.FileName);
+            }
         }
     }
 }

@@ -1,13 +1,15 @@
 ﻿namespace ServerService
 {
     using System;
-
+    using System.Text;
     using MessageQueues;
 
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
 
     using ServerService.DataService;
+    using ServerService.Models;
+    using Newtonsoft.Json;
 
     public class MQListener
     {
@@ -29,7 +31,11 @@
         private static void Consumer_Received(object sender, BasicDeliverEventArgs args)
         {
             var body = args.Body.ToArray();
-            MessageSaver.SaveFileToDatabase(body);
+
+            var message = Encoding.UTF8.GetString(body);
+            var fileModel = JsonConvert.DeserializeObject<File>(message);
+
+            MessageSaver.SaveFileToDatabase(fileModel);
             Console.WriteLine(Constants.Notification);
         }
     }
