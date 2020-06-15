@@ -9,27 +9,26 @@
     {
         public static void FindAndPublishExistFiles()
         {
-            var path = Constants.DirectoryPath;
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(Constants.DirectoryPath))
             {
                 return;
             }
 
-            var files = FindExistFiles(path);
-            WriteInfoToConsole(files);
+            var files = FindExistFiles();
             MessageSender.SendMessage(files);
         }
 
-        public static void DirectoryFilesListener()
+        public static void ListenDirectoryAndPublishFiles()
         {
-            var watcher = new FileSystemWatcher();
+            var watcher = new FileSystemWatcher
+            {
+                Path = Constants.DirectoryPath,
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName |
+                NotifyFilters.DirectoryName,
 
-            watcher.Path = Constants.DirectoryPath;
-
-            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-
-            watcher.Filter = $"*{Constants.FileExpansion}";
+                Filter = $"*{Constants.FileExpansion}"
+            };
+            
             watcher.Created += OnCreated;
             watcher.EnableRaisingEvents = true;
 
@@ -47,38 +46,23 @@
                 new FileViewModel
                 {
                     FileName = e.FullPath,
-                    Title = e.Name,
-                    Data = SetFileBytesData(e.FullPath)
+                    Title = e.Name
                 }
             });
         }
 
-        private static void WriteInfoToConsole(List<FileViewModel> files)
+        private static List<FileViewModel> FindExistFiles()
         {
-            foreach (var file in files)
-            {
-                Console.WriteLine($"File: {file.Title} - Existing");
-            }
-        }
-
-        private static List<FileViewModel> FindExistFiles(string path)
-        {
-            var directory = new DirectoryInfo(path);
+            var directory = new DirectoryInfo(Constants.DirectoryPath);
             var files = directory.GetFiles()
                 .Where(x => x.Extension == Constants.FileExpansion)
                 .Select(x => new FileViewModel
                 {
                     FileName = x.FullName,
-                    Title = x.Name,
-                    Data = SetFileBytesData(x.FullName)
+                    Title = x.Name
                 }).ToList();
             
             return files;
-        }
-
-        private static byte[] SetFileBytesData(string path)
-        {
-            return File.ReadAllBytes(path);
         }
     }
 }

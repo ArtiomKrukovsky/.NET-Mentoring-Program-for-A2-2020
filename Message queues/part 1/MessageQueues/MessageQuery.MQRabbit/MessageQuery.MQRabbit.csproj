@@ -82,7 +82,7 @@
     <Compile Include="DirectoryListener.cs" />
     <Compile Include="FileViewModel.cs" />
     <Compile Include="MessageSender.cs" />
-    <Compile Include="MQConnection.cs" />
+    <Compile Include="MQConnectionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

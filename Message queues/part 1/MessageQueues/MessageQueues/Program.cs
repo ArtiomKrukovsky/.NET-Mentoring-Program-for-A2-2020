@@ -7,7 +7,7 @@
         static void Main(string[] args)
         {
             DirectoryListener.FindAndPublishExistFiles();
-            DirectoryListener.DirectoryFilesListener();
+            DirectoryListener.ListenDirectoryAndPublishFiles();
         }
     }
 }
