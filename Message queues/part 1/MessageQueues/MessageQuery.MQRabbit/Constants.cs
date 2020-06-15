@@ -9,6 +9,6 @@
         /// </summary>
         public const string DirectoryPath = @"E:\.NET-Mentoring-Program-for-A2-2019\Message queues\directory";
 
-        public const string FileExpansion = ".docx";
+        public const string FileExpansion = ".webm";
     }
 }

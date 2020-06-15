@@ -1,8 +1,9 @@
 ﻿namespace MessageQueues
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;
 
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
@@ -28,6 +29,54 @@
             }
         }
 
+        public static void ReceiveChunkedMessages()
+        {
+            using (var model = MQConnection.GetRabbitChannel(Constants.QueryName))
+            {
+                var fileData = new List<byte>();
+                string fileName = string.Empty;
+                model.BasicQos(0, 1, false);
+                var consumer = new EventingBasicConsumer(model);
+
+                consumer.Received += (sender, args) =>
+                {
+                    Console.WriteLine("Received a chunks!");
+
+                    IDictionary<string, object> headers = args.BasicProperties.Headers;
+
+                    if (fileName.Equals(string.Empty))
+                    {
+                        fileName = Encoding.UTF8.GetString(headers["output-file"] as byte[]);
+                    }
+
+                    var isLastChunk = Convert.ToBoolean(headers["finished"]);
+                    fileData.AddRange(args.Body.ToArray());
+
+                    Console.WriteLine("Chunk saved. Finished? {0}", isLastChunk);
+                    model.BasicAck(args.DeliveryTag, false);
+
+                    if (isLastChunk)
+                    {
+                        MessageSaver.SaveFileToDatabase(new File { Data = fileData.ToArray(), Title = fileName });
+                        fileName = ResetDataForReceiver(out fileData);
+                    }
+                };
+
+                model.BasicConsume(Constants.QueryName, false, consumer);
+                Console.WriteLine("Press \'q\' to stop listening message query.");
+                while (Console.Read() != 'q')
+                {
+                }
+            }
+        }
+
+        private static string ResetDataForReceiver(out List<byte> fileData)
+        {
+            var fileName = string.Empty;
+            fileData = new List<byte>();
+            return fileName;
+        }
+
         private static void Consumer_Received(object sender, BasicDeliverEventArgs args)
         {
             var body = args.Body.ToArray();
@@ -35,20 +84,6 @@
 
             MessageSaver.SaveFileToDatabase(fileModel);
             Console.WriteLine(Constants.Notification);
-        }
-
-        public static Object ConvertBytesToFile(byte[] arrBytes)
-        {
-            using (var memStream = new MemoryStream())
-            {
-                var binForm = new BinaryFormatter();
-
-                memStream.Write(arrBytes, 0, arrBytes.Length);
-                memStream.Seek(0, SeekOrigin.Begin);
-
-                var file = binForm.Deserialize(memStream);
-                return file;
-            }
         }
 
         public static File Desserialize(byte[] data)

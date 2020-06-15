@@ -6,7 +6,8 @@
     {
         static void Main(string[] args)
         {
-            MQListener.ReceiveMessageAndPublish();
+            //MQListener.ReceiveMessageAndPublish();
+            MQListener.ReceiveChunkedMessages();
         }
     }
 }
