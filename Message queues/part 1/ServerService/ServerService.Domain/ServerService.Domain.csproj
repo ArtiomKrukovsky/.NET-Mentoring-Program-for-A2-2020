@@ -54,6 +54,7 @@
     <Compile Include="DataService\MessageSaver.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileDbContext.cs" />
+    <Compile Include="Models\FileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

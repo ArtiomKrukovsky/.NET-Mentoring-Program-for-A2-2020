@@ -1,4 +1,4 @@
-﻿namespace MessageQuery.MQRabbit
+﻿namespace ServerService.Models
 {
     using System;
 

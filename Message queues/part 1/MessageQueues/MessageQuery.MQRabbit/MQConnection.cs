@@ -9,7 +9,7 @@
             var connection = GetRabbitConnection();
             IModel model = connection.CreateModel();
 
-            model.QueueDeclare(queueName, true, false, false);
+            model.QueueDeclare(queueName, true, false, false, null);
             return model;
         }
 

@@ -1,5 +1,8 @@
 ﻿namespace ServerService.Models
 {
+    using System;
+
+    [Serializable]
     public class File
     {
         public int FileId { get; set; }
