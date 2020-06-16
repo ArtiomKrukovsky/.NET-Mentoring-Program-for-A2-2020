@@ -6,7 +6,7 @@
 
     using RabbitMQ.Client;
 
-    public static class MessageSender
+    public static class MessageSenderService
     {
         private const int ChunkSize = 16384;
 
@@ -39,30 +39,43 @@
 
                 int read;
                 byte[] buffer;
+
                 if (fileSize > ChunkSize)
                 {
                     buffer = new byte[ChunkSize];
-                    read = fileStream.Read(buffer, 0, ChunkSize);
+                    read = GetStreamData(fileStream, buffer, ChunkSize);
                 }
                 else
                 {
                     buffer = new byte[fileSize];
-                    read = fileStream.Read(buffer, 0, fileSize);
+                    read = GetStreamData(fileStream, buffer, fileSize);
                     isFinish = true;
                 }
 
-                var basicProperties = model.CreateBasicProperties();
-
-                basicProperties.Headers = new Dictionary<string, object>
-                {
-                    { "output-file", file.Title }, { "finished", isFinish }
-                };
+                var basicProperties = BuildBasicProperties(model, file, isFinish);
 
                 model.BasicPublish(string.Empty, Constants.QueryName, basicProperties, buffer);
                 fileSize -= read;
             }
 
             Console.WriteLine("Chunks publish is complete.");
+        }
+
+        private static int GetStreamData(FileStream fileStream, byte[] buffer, int size)
+        {
+            return fileStream.Read(buffer, 0, size);
+        }
+
+        private static IBasicProperties BuildBasicProperties(IModel model, FileViewModel file, bool isFinish)
+        {
+            var basicProperties = model.CreateBasicProperties();
+
+            basicProperties.Headers = new Dictionary<string, object>
+            {
+                { "output-file", file.Title }, { "finished", isFinish }
+            };
+
+            return basicProperties;
         }
     }
 }

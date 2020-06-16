@@ -6,8 +6,8 @@
     {
         static void Main(string[] args)
         {
-            DirectoryListener.FindAndPublishExistFiles();
-            DirectoryListener.ListenDirectoryAndPublishFiles();
+            DirectoryListenerService.FindAndPublishExistFiles();
+            DirectoryListenerService.ListenDirectoryAndPublishFiles();
         }
     }
 }

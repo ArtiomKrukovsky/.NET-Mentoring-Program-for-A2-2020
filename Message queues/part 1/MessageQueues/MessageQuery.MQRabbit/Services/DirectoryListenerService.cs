@@ -5,7 +5,7 @@
     using System.IO;
     using System.Linq;
 
-    public class DirectoryListener
+    public class DirectoryListenerService
     {
         public static void FindAndPublishExistFiles()
         {
@@ -14,8 +14,8 @@
                 return;
             }
 
-            var files = FindExistFiles();
-            MessageSender.SendMessage(files);
+            var files = GetExistFiles();
+            MessageSenderService.SendMessage(files);
         }
 
         public static void ListenDirectoryAndPublishFiles()
@@ -41,7 +41,7 @@
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine("File: " + e.Name + " " + e.ChangeType);
-            MessageSender.SendMessage(new List<FileViewModel>
+            MessageSenderService.SendMessage(new List<FileViewModel>
             {
                 new FileViewModel
                 {
@@ -51,7 +51,7 @@
             });
         }
 
-        private static List<FileViewModel> FindExistFiles()
+        private static List<FileViewModel> GetExistFiles()
         {
             var directory = new DirectoryInfo(Constants.DirectoryPath);
             var files = directory.GetFiles()
