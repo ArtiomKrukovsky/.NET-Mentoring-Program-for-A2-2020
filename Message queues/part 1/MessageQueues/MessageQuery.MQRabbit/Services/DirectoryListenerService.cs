@@ -45,7 +45,7 @@
             {
                 new FileViewModel
                 {
-                    FileName = e.FullPath,
+                    FullName = e.FullPath,
                     Title = e.Name
                 }
             });
@@ -58,7 +58,7 @@
                 .Where(x => x.Extension == Constants.FileExpansion)
                 .Select(x => new FileViewModel
                 {
-                    FileName = x.FullName,
+                    FullName = x.FullName,
                     Title = x.Name
                 }).ToList();
             
