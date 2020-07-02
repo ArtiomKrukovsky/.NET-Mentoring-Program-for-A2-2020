@@ -68,6 +68,10 @@
     <Compile Include="Migrations\202006160757333_UpdateDataField_1.Designer.cs">
       <DependentUpon>202006160757333_UpdateDataField_1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007021125247_AddStatusMigration.cs" />
+    <Compile Include="Migrations\202007021125247_AddStatusMigration.Designer.cs">
+      <DependentUpon>202007021125247_AddStatusMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileDbContext.cs" />
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006160757333_UpdateDataField_1.resx">
       <DependentUpon>202006160757333_UpdateDataField_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007021125247_AddStatusMigration.resx">
+      <DependentUpon>202007021125247_AddStatusMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

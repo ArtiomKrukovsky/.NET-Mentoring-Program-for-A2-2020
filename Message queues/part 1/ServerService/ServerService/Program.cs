@@ -2,9 +2,9 @@
 {
     using System;
     using System.IO;
-    using System.Net;
 
     using MessageQueues;
+    using MessageQueues.Services;
 
     class Program
     {
@@ -20,6 +20,7 @@
                 return;
             }
 
+            StatusReceiverService.ReceiveStatusMessage();
             MQListener.ReceiveChunkedMessages(path);
         }
     }
