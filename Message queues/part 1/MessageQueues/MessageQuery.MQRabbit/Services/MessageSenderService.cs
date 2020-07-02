@@ -13,7 +13,7 @@
     {
         public static void SendMessage(List<FileViewModel> files)
         {
-            using (var model = MQConnectionService.GetRabbitChannel(Constants.Queries.DataQuery))
+            using (var model = MQConnection.GetRabbitChannel(Constants.Queries.DataQuery))
             {
                 foreach (var file in files)
                 {

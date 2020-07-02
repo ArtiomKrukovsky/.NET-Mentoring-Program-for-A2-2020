@@ -64,9 +64,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MessageQuery.MQRabbit\MessageQuery.MQRabbit.csproj">
+    <ProjectReference Include="..\MessageQuery.MQRabbit\MessageQuery.Sender.csproj">
       <Project>{7e6b2f96-fecd-462c-972f-22a77c8f837a}</Project>
-      <Name>MessageQuery.MQRabbit</Name>
+      <Name>MessageQuery.Sender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MessageQuery.Receiver\MessageQuery.Receiver.csproj">
+      <Project>{a326828f-f3ed-4085-89ce-960705047e80}</Project>
+      <Name>MessageQuery.Receiver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

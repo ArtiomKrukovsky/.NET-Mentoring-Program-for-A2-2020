@@ -2,7 +2,7 @@
 {
     using RabbitMQ.Client;
 
-    public class MQConnectionService
+    public class MQConnection
     {
         public static IModel GetRabbitChannel(string queueName)
         {

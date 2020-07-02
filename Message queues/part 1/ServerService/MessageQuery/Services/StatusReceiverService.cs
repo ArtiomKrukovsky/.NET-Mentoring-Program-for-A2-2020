@@ -18,13 +18,13 @@
             var model = MQConnection.GetRabbitChannel(MessageQueues.Constants.Queries.StatusQuery);
             var consumer = new EventingBasicConsumer(model);
 
-            consumer.Received += Consumer_Received;
+            consumer.Received += Status_Received;
             model.BasicConsume(MessageQueues.Constants.Queries.StatusQuery, true, consumer);
 
             Console.WriteLine("Start status processing...");
         }
 
-        private static void Consumer_Received(object sender, BasicDeliverEventArgs args)
+        private static void Status_Received(object sender, BasicDeliverEventArgs args)
         {
             var body = args.Body.ToArray();
 

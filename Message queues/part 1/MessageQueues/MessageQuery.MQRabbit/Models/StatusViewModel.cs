@@ -1,6 +1,6 @@
 ﻿namespace MessageQuery.MQRabbit.Models
 {
-    public class StatusModel
+    public class StatusViewModel
     {
         public int MaxMessageSize { get; set; }
 

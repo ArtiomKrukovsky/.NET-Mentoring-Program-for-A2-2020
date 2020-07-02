@@ -21,6 +21,8 @@
             }
 
             StatusReceiverService.ReceiveStatusMessage();
+            ConfigFileListener.ListenConfigFile();
+
             MQListener.ReceiveChunkedMessages(path);
         }
     }

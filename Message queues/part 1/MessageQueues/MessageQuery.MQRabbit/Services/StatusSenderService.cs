@@ -14,7 +14,7 @@
         {
            var statusMessage = BuildStatusMessage(status);
 
-           using (var model = MQConnectionService.GetRabbitChannel(Constants.Queries.StatusQuery))
+           using (var model = MQConnection.GetRabbitChannel(Constants.Queries.StatusQuery))
            {
                IBasicProperties basicProperties = model.CreateBasicProperties();
 
@@ -23,15 +23,15 @@
            }
         }
 
-        private static byte[] SerializeMessageInBytes(StatusModel statusMessage)
+        private static byte[] SerializeMessageInBytes(StatusViewModel statusMessage)
         {
             var json = JsonSerializer.Serialize(statusMessage);
             return Encoding.UTF8.GetBytes(json);
         }
 
-        private static StatusModel BuildStatusMessage(string status)
+        private static StatusViewModel BuildStatusMessage(string status)
         {
-            return new StatusModel
+            return new StatusViewModel
             {
                 MaxMessageSize = Constants.DefaultChunkSize, CurrentStatus = status
             };
