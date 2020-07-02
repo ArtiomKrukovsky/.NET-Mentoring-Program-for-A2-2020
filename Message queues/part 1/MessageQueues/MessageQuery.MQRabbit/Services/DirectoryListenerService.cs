@@ -5,6 +5,8 @@
     using System.IO;
     using System.Linq;
 
+    using MessageQuery.MQRabbit.Services;
+
     public class DirectoryListenerService
     {
         public static void FindAndPublishExistFiles()
@@ -32,6 +34,7 @@
             watcher.Created += OnCreated;
             watcher.EnableRaisingEvents = true;
 
+            WaitingMessage();
             Console.WriteLine("Press \'q\' to stop directory listening.");
             while (Console.Read() != 'q')
             {
@@ -41,6 +44,8 @@
         private static void OnCreated(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine("File: " + e.Name + " " + e.ChangeType);
+            StatusSenderService.SendStatus($"Find new file - '{e.Name}'.");
+
             MessageSenderService.SendMessage(new List<FileViewModel>
             {
                 new FileViewModel
@@ -49,6 +54,8 @@
                     Title = e.Name
                 }
             });
+
+            WaitingMessage();
         }
 
         private static List<FileViewModel> GetExistFiles()
@@ -63,6 +70,11 @@
                 }).ToList();
             
             return files;
+        }
+
+        private static void WaitingMessage()
+        {
+            StatusSenderService.SendStatus("Waiting for new files...");
         }
     }
 }

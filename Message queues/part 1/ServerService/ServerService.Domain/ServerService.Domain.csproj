@@ -71,6 +71,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FileDbContext.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

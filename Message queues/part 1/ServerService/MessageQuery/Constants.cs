@@ -2,6 +2,11 @@
 {
     public static class Constants
     {
-        public const string DataQueryName = "data-query";
+        public static partial class Queries
+        {
+            public const string DataQuery = "data-query";
+
+            public const string StatusQuery = "status-query";
+        }
     }
 }

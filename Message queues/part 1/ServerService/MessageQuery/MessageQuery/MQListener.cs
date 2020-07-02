@@ -12,7 +12,7 @@
     {
         public static void ReceiveChunkedMessages(string path)
         {
-            using (var model = MQConnection.GetRabbitChannel(Constants.DataQueryName))
+            using (var model = MQConnection.GetRabbitChannel(Constants.Queries.DataQuery))
             {
                 model.BasicQos(0, 1, false);
                 var consumer = new EventingBasicConsumer(model);
@@ -39,7 +39,7 @@
                     }
                 };
                 
-                model.BasicConsume(Constants.DataQueryName, false, consumer);
+                model.BasicConsume(Constants.Queries.DataQuery, false, consumer);
                 Console.WriteLine("Start file processing...\nPress \'q\' to stop listening message query.");
                 while (Console.Read() != 'q')
                 {

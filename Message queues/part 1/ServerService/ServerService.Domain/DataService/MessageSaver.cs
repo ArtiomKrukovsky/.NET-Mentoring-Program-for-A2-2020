@@ -12,5 +12,14 @@
                 await context.SaveChangesAsync();
             }
         }
+
+        public async static void SaveStatusToDatabase(Status status)
+        {
+            using (var context = new FileDbContext())
+            {
+                context.Statuses.Add(status);
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }
