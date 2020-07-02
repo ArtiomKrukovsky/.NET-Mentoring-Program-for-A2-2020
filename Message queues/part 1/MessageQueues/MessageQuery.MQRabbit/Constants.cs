@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string QueryName = "test-query";
+        public const string DataQueryName = "data-query";
 
         /// <summary>
         /// These value are suitable for a specific PC.

@@ -2,6 +2,6 @@
 {
     public static class Constants
     {
-        public const string QueryName = "test-query";
+        public const string DataQueryName = "data-query";
     }
 }

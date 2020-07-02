@@ -13,7 +13,7 @@
 
         public static void SendMessage(List<FileViewModel> files)
         {
-            using (var model = MQConnectionService.GetRabbitChannel(Constants.QueryName))
+            using (var model = MQConnectionService.GetRabbitChannel(Constants.DataQueryName))
             {
                 foreach (var file in files)
                 {
@@ -46,7 +46,7 @@
                 fileSize -= readChunkSize;
 
                 var basicProperties = BuildBasicProperties(model, file, isFinish);
-                model.BasicPublish(string.Empty, Constants.QueryName, basicProperties, buffer);
+                model.BasicPublish(string.Empty, Constants.DataQueryName, basicProperties, buffer);
             }
 
             Console.WriteLine("Chunks publish is complete.");
