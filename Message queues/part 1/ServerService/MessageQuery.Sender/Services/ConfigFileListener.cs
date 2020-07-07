@@ -24,6 +24,8 @@
         {
             var configBytes = File.ReadAllBytes(e.FullPath);
             CommandSenderService.SendCommand(configBytes);
+
+            Console.WriteLine("New command was added");
         }
     }
 }

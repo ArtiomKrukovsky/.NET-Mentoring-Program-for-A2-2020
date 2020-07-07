@@ -40,7 +40,11 @@
 
             var commands = JsonConvert.DeserializeObject<dynamic>(commandsJson);
 
-            Constants.DefaultChunkSize = commands.Size;
+            if (commands.Size != null)
+            {
+                Constants.DefaultChunkSize = commands.Size;
+                Console.WriteLine("New command was applied");
+            }
         }
     }
 }
