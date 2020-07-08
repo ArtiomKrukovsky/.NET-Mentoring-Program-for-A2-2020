@@ -13,6 +13,13 @@
             return model;
         }
 
+        public static IModel GetRabbitChannel()
+        {
+            var connection = GetRabbitConnection();
+            IModel model = connection.CreateModel();
+            return model;
+        }
+
         private static IConnection GetRabbitConnection()
         {
             var factory = new ConnectionFactory

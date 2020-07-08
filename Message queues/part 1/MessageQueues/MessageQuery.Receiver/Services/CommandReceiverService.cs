@@ -14,13 +14,17 @@
 
     public class CommandReceiverService
     {
-        public static void ReceiveCommandMessage()
+        public static void ReceiveCommandMessage(string userName)
         {
-            var model = MQConnection.GetRabbitChannel(Constants.Queries.CommandQuery);
+            var query = Constants.Queries.CommandQuery + userName.ToLower();
+
+            var model = MQConnection.GetRabbitChannel(query);
             var consumer = new EventingBasicConsumer(model);
 
+            model.QueueBind(query, Constants.Exchange, Constants.RoutingKey);
+
             consumer.Received += Command_Received;
-            model.BasicConsume(Constants.Queries.CommandQuery, true, consumer);
+            model.BasicConsume(query, true, consumer);
         }
 
         private static void Command_Received(object sender, BasicDeliverEventArgs args)

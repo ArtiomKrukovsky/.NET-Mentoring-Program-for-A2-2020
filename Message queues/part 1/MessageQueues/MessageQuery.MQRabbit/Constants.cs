@@ -8,7 +8,7 @@
 
             public const string StatusQuery = "status-query";
 
-            public const string CommandQuery = "command-query";
+            public const string CommandQuery = "topic.command.";
         }
 
         /// <summary>
@@ -19,5 +19,9 @@
         public const string FileExpansion = ".mp4";
 
         public static int DefaultChunkSize = 16384;
+
+        public const string Exchange = "topic.exchange";
+
+        public const string RoutingKey = "*.command.*";
     }
 }

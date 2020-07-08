@@ -8,7 +8,7 @@
 
             public const string StatusQuery = "status-query";
 
-            public const string CommandQuery = "command-query";
+            public const string CommandQuery = "topic.command.query";
         }
         
         /// <summary>
