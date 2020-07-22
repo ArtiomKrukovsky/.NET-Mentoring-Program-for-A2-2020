@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EF_Core.Models;
 using EF_Core.Models.ModelView;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -26,7 +27,7 @@ namespace EF_Core
             var orders = (from order in _northwindDbContext.Orders
                 from oDetail in order.OrderDetails
                 where oDetail.Product.Category.CategoryName == categoryName
-                select new OrderViewModel()
+                select new OrderViewModel
                 {
                     CustomerName = order.Customer.CompanyName,
                     Products = (List<ProductViewModel>)
@@ -44,6 +45,33 @@ namespace EF_Core
             {
                 WriteOrdersValue(order);
             }
+        }
+
+        [Fact]
+        public void TaskThree_AddRegion()
+        {
+            var region = new Region()
+            {
+                RegionId = 3,
+                RegionDescription = "This is a beautiful region"
+            };
+
+            _northwindDbContext.Regions.Add(region);
+            _northwindDbContext.SaveChanges();
+        }
+
+        [Fact]
+        public void TaskThree_UpdateData()
+        {
+            var territory = _northwindDbContext.Territories.Find("Gdansk");
+            if (territory == null)
+            {
+                return;
+            }
+
+            territory.TerritoryDescription = "This is a so pretty territory";
+            _northwindDbContext.Entry(territory).State = EntityState.Modified;
+            _northwindDbContext.SaveChanges();
         }
 
         private void WriteOrdersValue(OrderViewModel order)

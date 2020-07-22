@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+using EF_Core.Extensions;
 
 namespace EF_Core.Models
 {
@@ -465,6 +465,8 @@ namespace EF_Core.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Territories_Regions");
             });
+
+            modelBuilder.Seed();
         }
     }
 }
