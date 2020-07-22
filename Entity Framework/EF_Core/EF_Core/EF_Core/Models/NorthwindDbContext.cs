@@ -21,10 +21,11 @@ namespace EF_Core.Models
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Region> Region { get; set; }
+        public DbSet<Region> Regions { get; set; }
         public DbSet<Shipper> Shippers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Territory> Territories { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -240,6 +241,30 @@ namespace EF_Core.Models
                     .HasConstraintName("FK_Order_Details_Products");
             });
 
+            modelBuilder.Entity<CreditCard>(entity =>
+            {
+                entity.HasKey(e => new { e.CreditCardId, e.EmployeeId });
+
+                entity.Property(e => e.CreditCardId).HasColumnName("CreditCardID");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+
+                entity.HasIndex(e => e.CardNumber)
+                    .HasName("CardNumber");
+
+                entity.HasIndex(e => e.CardHolder)
+                    .HasName("CardHolder");
+
+                entity.HasIndex(e => e.ExpirationDate)
+                    .HasName("ExpirationDate");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.CreditCards)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employee_Credit_Cards");
+            });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(e => e.OrderId);
@@ -428,7 +453,7 @@ namespace EF_Core.Models
                     .HasMaxLength(20)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.RegionId).HasColumnName("RegionID");
+                entity.Property(e => e.RegionId).HasColumnName("RegionsID");
 
                 entity.Property(e => e.TerritoryDescription)
                     .IsRequired()
@@ -438,7 +463,7 @@ namespace EF_Core.Models
                     .WithMany(p => p.Territories)
                     .HasForeignKey(d => d.RegionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Territories_Region");
+                    .HasConstraintName("FK_Territories_Regions");
             });
         }
     }

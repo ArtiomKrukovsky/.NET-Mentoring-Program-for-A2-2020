@@ -10,6 +10,7 @@ namespace EF_Core.Models
             EmployeeTerritories = new HashSet<EmployeeTerritory>();
             InverseReportsToNavigation = new HashSet<Employee>();
             Orders = new HashSet<Order>();
+            CreditCards = new HashSet<CreditCard>();
         }
 
         public int EmployeeId { get; set; }
@@ -35,5 +36,6 @@ namespace EF_Core.Models
         public ICollection<EmployeeTerritory> EmployeeTerritories { get; set; }
         public ICollection<Employee> InverseReportsToNavigation { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<CreditCard> CreditCards { get; set; }
     }
 }

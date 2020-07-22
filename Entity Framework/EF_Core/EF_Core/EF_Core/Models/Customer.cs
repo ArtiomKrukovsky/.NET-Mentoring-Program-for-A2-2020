@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EF_Core.Models
 {
@@ -21,6 +22,7 @@ namespace EF_Core.Models
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
+        public DateTime FoundationDate { get; set; }
 
         public ICollection<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
         public ICollection<Order> Orders { get; set; }

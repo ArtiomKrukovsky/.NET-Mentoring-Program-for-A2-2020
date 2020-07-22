@@ -4,14 +4,16 @@ using EF_Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EF_Core.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
-    partial class NorthwindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200722104826_Version1.1")]
+    partial class Version11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,7 +80,7 @@ namespace EF_Core.Migrations
                     b.HasIndex("ExpirationDate")
                         .HasName("ExpirationDate");
 
-                    b.ToTable("CreditCards");
+                    b.ToTable("CreditCard");
                 });
 
             modelBuilder.Entity("EF_Core.Models.Customer", b =>
@@ -116,9 +118,6 @@ namespace EF_Core.Migrations
                     b.Property<string>("Fax")
                         .HasColumnType("nvarchar(24)")
                         .HasMaxLength(24);
-
-                    b.Property<DateTime>("FoundationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(24)")
@@ -481,7 +480,7 @@ namespace EF_Core.Migrations
                     b.HasKey("RegionId")
                         .HasAnnotation("SqlServer:Clustered", false);
 
-                    b.ToTable("Regions");
+                    b.ToTable("Region");
                 });
 
             modelBuilder.Entity("EF_Core.Models.Shipper", b =>
@@ -577,7 +576,7 @@ namespace EF_Core.Migrations
                         .HasMaxLength(20);
 
                     b.Property<int>("RegionId")
-                        .HasColumnName("RegionsID")
+                        .HasColumnName("RegionID")
                         .HasColumnType("int");
 
                     b.Property<string>("TerritoryDescription")
@@ -691,7 +690,7 @@ namespace EF_Core.Migrations
                     b.HasOne("EF_Core.Models.Region", "Region")
                         .WithMany("Territories")
                         .HasForeignKey("RegionId")
-                        .HasConstraintName("FK_Territories_Regions")
+                        .HasConstraintName("FK_Territories_Region")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
